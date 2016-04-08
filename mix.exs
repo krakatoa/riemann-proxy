@@ -14,7 +14,8 @@ defmodule RiemannProxy.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger]]
+    [applications: [:logger],
+      mod: {RiemannProxy, []}]
   end
 
   # Dependencies can be Hex packages:
@@ -27,6 +28,6 @@ defmodule RiemannProxy.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [{:exprotobuf, "~> 1.0.0"}]
   end
 end
