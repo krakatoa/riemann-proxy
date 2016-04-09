@@ -24,7 +24,7 @@ defmodule RiemannProxy.Server do
   defp read_line(socket) do
     {:ok, data} = :gen_tcp.recv(socket, 0)
     IO.puts "Recv: #{inspect data, limit: 50}"
-    Proto.Msg.encode(Proto.Msg.new(ok: true))
+    RiemannProxy.Proto.Msg.encode(RiemannProxy.Proto.Msg.new(ok: true))
   end
 
   defp write_line(response, socket) do
