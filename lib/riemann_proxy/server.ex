@@ -23,7 +23,8 @@ defmodule RiemannProxy.Server do
 
   defp read_line(socket) do
     {:ok, data} = :gen_tcp.recv(socket, 0)
-    IO.puts "Recv: #{inspect data, limit: 50}"
+    IO.puts "Forwarding message: #{inspect RiemannProxy.Proto.Msg.decode(data)}"
+    RiemannProxy.Router.fake_route(data)
     RiemannProxy.Proto.Msg.encode(RiemannProxy.Proto.Msg.new(ok: true))
   end
 

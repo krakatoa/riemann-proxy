@@ -1,6 +1,10 @@
 # RiemannProxy
 
-**TODO: Add description**
+The main motivation behind writing a Riemann Proxy relies in the fact that handling lots of metrics and calculations can lead in asymetric topology of several Riemann servers scattering and gathering subsets of information to take different responsibilities over each subset (ie.: making partials, moving averages, alerting, etc.). Also, there are the following motivations behind Riemann-Proxy:
+
+* Single and symmetric configuration
+* Automatically ring-failover on Riemann servers
+* Put into practice various Erlang VM and Elixir stuff in a real production environment
 
 ## Installation
 

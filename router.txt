@@ -1,0 +1,26 @@
+Mnesia schema:
+
+Routes:
+  service   host  endpoints
+  test.*    *     a
+  tost.*    *     b
+
+Endpoints (Ring like):
+  ids   host  port  transport
+  1     a.com 5555  tcp
+  2     b.com 5555  tcp
+  3     c.com 5555  tcp
+
+  If 1 fails, fallback to 2.
+  If 2 fails, fallback to 3.
+  If 3 fails, fallback to 1.
+  ...
+  If 1 and 2 fail, fallback to 3.
+
+Statistics:
+  * bytes sent to each endpoint
+
+Journal:
+  * up / down endpoints
+
+Honeydew TCP pool?
