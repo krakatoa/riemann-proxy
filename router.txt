@@ -1,9 +1,12 @@
 Mnesia schema:
 
 Routes:
-  service   host  endpoints
-  test.*    *     a
-  tost.*    *     b
+  tagged  service   host  endpoints
+  foo     *         *     a
+  *       test.*    *     b
+  *       tost.*    *     c
+
+  *       *         *     a
 
 Endpoints (Ring like):
   ids   host  port  transport

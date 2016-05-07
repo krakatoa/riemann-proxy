@@ -32,5 +32,6 @@ defmodule RiemannProxy.Endpoint do
       :mnesia.select(:endpoints, [{:"$1", [], [:"$1"]}])
     end
     :mnesia.activity(:transaction, f)
+    |> Enum.map(fn(data) -> endpoint(data) end)
   end
 end
