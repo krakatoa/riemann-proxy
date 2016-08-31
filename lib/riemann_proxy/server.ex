@@ -23,10 +23,10 @@ defmodule RiemannProxy.Server do
 
   defp read_line(socket) do
     {:ok, data} = :gen_tcp.recv(socket, 0)
-    spawn(fn -> IO.puts("Forwarding message: #{inspect RiemannProxy.Proto.Msg.decode(data)}") end)
+    # spawn(fn -> IO.puts("Received message: #{inspect RiemannProxy.Proto.Msg.decode(data)}") end)
     # spawn(fn -> nil end)
-    # spawn(fn -> RiemannProxy.Router.fake_route(data) end)
-    RiemannProxy.Router.route(data, 1)
+    # spawn(fn -> RiemannProxy.Router.route(data) end)
+    RiemannProxy.Router.route(data)
     ok_msg
   end
 

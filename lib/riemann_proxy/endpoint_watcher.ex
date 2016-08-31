@@ -3,7 +3,9 @@ defmodule RiemannProxy.EndpointWatcher do
   require RiemannProxy.Endpoint
 
   def start_link do
-    GenServer.start_link(__MODULE__, {}, [{:name, {:local, __MODULE__}}])
+    GenServer.start_link( __MODULE__,
+                          {},
+                          [ {:name, {:local, __MODULE__}} ] )
   end
 
   def init({}) do
@@ -17,6 +19,11 @@ defmodule RiemannProxy.EndpointWatcher do
     |> Enum.each(fn(e) -> spin_endpoint(e) end)
   end
 
+  defp spin_endpoint(endpoint) do
+    {:ok, pid} = GenServer.start(RiemannProxy.EndpointConnection, {to_char_list(endpoint[:host]), endpoint[:port]}, [])
+    RiemannProxy.EndpointConnection.register(endpoint[:idx], pid)
+  end
+
   defp subscribe do
     :mnesia.subscribe({:table, :endpoints, :simple})
   end
@@ -25,11 +32,6 @@ defmodule RiemannProxy.EndpointWatcher do
     Tuple.delete_at(record,0)
     |> Tuple.insert_at(0, :endpoint)
     |> RiemannProxy.Endpoint.endpoint
-  end
-
-  defp spin_endpoint(endpoint) do
-    {:ok, pid} = GenServer.start(RiemannProxy.EndpointDispatcher, {endpoint[:host], endpoint[:port]}, [])
-    RiemannProxy.EndpointDispatcher.create(endpoint[:idx], pid)
   end
 
   def handle_info({:mnesia_table_event, {:write, record, _d}}, state) do

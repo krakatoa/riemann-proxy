@@ -8,6 +8,15 @@ Routes:
 
   *       *         *     a
 
+condition endpoint
+------------------
+tagged 'foo'        # :lists.member('foo', tags)
+service = 'test.*'  # {:ok, regex} = Regex.compile("test.*"); Regex.match?(regex, service)
+host = 'host-*'     # {:ok, regex} = Regex.compile("host-*"); Regex.match?(regex, host)
+
+(tagged 'foo' and tagged 'bla') or service = 'test.*'
+catch-all
+
 Endpoints (Ring like):
   ids   host  port  transport
   1     a.com 5555  tcp
