@@ -13,5 +13,6 @@ defmodule RiemannProxy do
 
     opts = [strategy: :one_for_one, name: RiemannProxy.Supervisor]
     Supervisor.start_link(children, opts)
+    RiemannProxy.Router.start_link
   end
 end

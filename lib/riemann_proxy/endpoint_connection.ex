@@ -1,12 +1,13 @@
-defmodule RiemannProxy.EndpointDispatcher do
+defmodule RiemannProxy.EndpointConnection do
   require Record
-  Record.defrecord :endpoint_dispatcher, [:idx, :pid]
+  Record.defrecord :endpoint_connection, [:idx, :pid]
+  # local_content
 
   use GenServer
 
   def init({host, port}) do
     {:ok, socket} = connect(host, port)
-    IO.puts "endpoint dispatcher for #{inspect {host, port}} created @ #{inspect self}"
+    IO.puts "endpoint connection for #{inspect {host, port}} created @ #{inspect self}"
     {:ok, socket}
   end
 
@@ -16,18 +17,18 @@ defmodule RiemannProxy.EndpointDispatcher do
   end
 
   def handle_cast({:dispatch, msg}, socket) do
-    IO.puts "dispatch: #{inspect msg} (#{inspect socket}) @ #{inspect self}"
+    IO.puts "Dispatch: #{inspect msg} (#{inspect socket}) @ #{inspect self}"
     :ok = :gen_tcp.send(socket, msg)
     {:ok, _resp} = :gen_tcp.recv(socket, 0)
 
     {:noreply, socket}
   end
 
-  def create(idx, pid) do
+  def register(idx, pid) do
     f = fn ->
       :mnesia.write(
-        :endpoint_dispatchers,
-        endpoint_dispatcher(
+        :endpoint_connections,
+        endpoint_connection(
           idx: idx,
           pid: pid
         ),
@@ -39,11 +40,11 @@ defmodule RiemannProxy.EndpointDispatcher do
 
   def read(idx) do
     f = fn ->
-      :mnesia.read(:endpoint_dispatchers, idx)
+      :mnesia.read(:endpoint_connections, idx)
     end
     case List.first(:mnesia.activity(:transaction, f)) do
       nil -> nil
-      data -> endpoint_dispatcher(data)
+      data -> endpoint_connection(data)
     end
   end
 end

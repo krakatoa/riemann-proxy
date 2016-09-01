@@ -22,3 +22,12 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
           [applications: [:riemann_proxy]]
         end
 
+## TODO
+
+[] Try reconnection of TCP sockets
+[] Dynamic connection/routing update upon Mnesia changes
+[] Failover on connection failure
+[] Supervision tree
+[] HTTP Api for modifying routing and endpoint tables
+[] More complex routing patterns
+[] Configuration UI

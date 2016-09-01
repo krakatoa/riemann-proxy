@@ -13,10 +13,24 @@ defmodule RiemannProxy.Mnesia do
       {:disc_copies, nodes}
     ])
 
-    :mnesia.create_table(:endpoint_dispatchers, [
+    :mnesia.create_table(:routes, [
+      {:attributes, [:order, :pattern, :endpoint_id]},
+      {:type, :ordered_set},
+      {:record_name, :route},
+      {:disc_copies, nodes}
+    ])
+
+    :mnesia.create_table(:endpoint_connections, [
       {:attributes, [:idx, :pid]},
       {:type, :set},
-      {:record_name, :endpoint_dispatcher},
+      {:record_name, :endpoint_connection},
+      {:local_content, true}
+    ])
+
+    :mnesia.create_table(:route_bindings, [
+      {:attributes, [:order, :route_matcher_pid, :endpoint_connection_pid]},
+      {:type, :ordered_set},
+      {:record_name, :route_binding},
       {:local_content, true}
     ])
   end
