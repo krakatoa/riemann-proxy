@@ -20,7 +20,7 @@ defmodule RiemannProxy.EndpointWatcher do
   end
 
   defp spin_endpoint(endpoint) do
-    {:ok, pid} = GenServer.start(RiemannProxy.EndpointConnection, {to_char_list(endpoint[:host]), endpoint[:port]}, [])
+    {:ok, pid} = Connection.start(RiemannProxy.EndpointConnection, {to_char_list(endpoint[:host]), endpoint[:port]}, [])
     RiemannProxy.EndpointConnection.register(endpoint[:idx], pid)
   end
 
