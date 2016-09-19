@@ -5,6 +5,7 @@ defmodule RiemannProxy do
     import Supervisor.Spec
 
     :mnesia.start()
+    :ok = :mnesia.wait_for_tables([:endpoints, :routes, :endpoint_connections, :route_bindings], 5000)
 
     children = [
       supervisor(Task.Supervisor, [[name: RiemannProxy.TaskSupervisor]]),
